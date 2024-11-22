@@ -1,101 +1,126 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { FaMoon, FaSun } from "react-icons/fa"; // Import icons from react-icons
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [html, setHtml] = useState("");
+  const [css, setCss] = useState("");
+  const [js, setJs] = useState("");
+  const [darkMode, setDarkMode] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const iframeContent = `
+    <html>
+      <head>
+        <style>${css}</style>
+      </head>
+      <body>
+        ${html}
+        <script>${js}</script>
+      </body>
+    </html>
+  `;
+
+  return (
+    <div
+      className={`min-h-screen flex flex-col pb-20 ${
+        darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-900"
+      }`}
+    >
+      {/* Header and Dark Mode Toggle */}
+      <div
+        className={`p-4 flex justify-between items-center ${
+          darkMode ? "bg-gray-800" : "bg-gray-200"
+        }`}
+      >
+        <h1 className="text-2xl font-bold">HTML, CSS, JS Live Preview</h1>
+        <button
+          onClick={() => setDarkMode(!darkMode)}
+          className={`px-4 py-4 flex items-center space-x-2 ${
+            darkMode ? "bg-blue-700" : "bg-gray-600"
+          } text-white rounded shadow`}
+        >
+          {/* Conditionally render the icon based on darkMode */}
+          {darkMode ? (
+            <FaSun className="text-yellow-400" /> // Sun icon for light mode
+          ) : (
+            <FaMoon className="text-gray-100" /> // Moon icon for dark mode
+          )}
+          
+        </button>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex flex-grow">
+        {/* Input Section */}
+        <div className="w-1/2 p-4 flex flex-col gap-4">
+          {/* HTML Input */}
+          <div className="flex flex-col">
+            <label htmlFor="html" className="font-bold text-red-500 mb-2">
+              HTML
+            </label>
+            <textarea
+              id="html"
+              className={`p-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500 ${
+                darkMode ? "bg-gray-800 text-white" : "bg-gray-50"
+              }`}
+              rows="8"
+              value={html}
+              onChange={(e) => setHtml(e.target.value)}
+              placeholder="Write HTML here..."
+            ></textarea>
+          </div>
+
+          {/* CSS Input */}
+          <div className="flex flex-col">
+            <label htmlFor="css" className="font-bold text-blue-500 mb-2">
+              CSS
+            </label>
+            <textarea
+              id="css"
+              className={`p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                darkMode ? "bg-gray-800 text-white" : "bg-gray-50"
+              }`}
+              rows="8"
+              value={css}
+              onChange={(e) => setCss(e.target.value)}
+              placeholder="Write CSS here..."
+            ></textarea>
+          </div>
+
+          {/* JavaScript Input */}
+          <div className="flex flex-col">
+            <label htmlFor="js" className="font-bold text-yellow-500 mb-2">
+              JavaScript
+            </label>
+            <textarea
+              id="js"
+              className={`p-2 border rounded focus:outline-none focus:ring-2 focus:ring-yellow-500 ${
+                darkMode ? "bg-gray-800 text-white" : "bg-gray-50"
+              }`}
+              rows="8"
+              value={js}
+              onChange={(e) => setJs(e.target.value)}
+              placeholder="Write JavaScript here..."
+            ></textarea>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Output Section */}
+        <div className="w-1/2 p-4">
+          <label htmlFor="output" className="font-bold mb-2 block">
+            Output
+          </label>
+          <iframe
+            id="output"
+            className={`w-full h-full border rounded ${
+              darkMode ? "bg-gray-800" : "bg-white"
+            }`}
+            srcDoc={iframeContent}
+            sandbox="allow-scripts allow-same-origin"
+          ></iframe>
+        </div>
+      </div>
     </div>
   );
 }
